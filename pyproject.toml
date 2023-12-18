@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "primed"
+version = "0.1.0"
+description = ""
+authors = ["Sky \"g3ner1c\" Hong <g3ner1c-sky@pm.me>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+discord-py = "^2.3.2"
+python-dotenv = "^1.0.0"
+beautifulsoup4 = "^4.12.2"
+aiohttp = "^3.9.1"
