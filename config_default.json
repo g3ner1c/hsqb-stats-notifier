@@ -1,5 +1,5 @@
 {
-    "prefix": ">",
+    "prefix": "/",
     "embed_colors": {
         "neutral": "0xAE4DFF",
         "error": "0xE02B2B",

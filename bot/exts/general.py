@@ -14,7 +14,7 @@ class General(commands.Cog, name="general commands"):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    @commands.command(
+    @commands.hybrid_command(
         name="ping",
         description="ping bot",
     )
@@ -27,7 +27,7 @@ class General(commands.Cog, name="general commands"):
         )
         await ctx.send(embed=embed)
 
-    @commands.command(
+    @commands.hybrid_command(
         name="invite",
         description="get invite link",
     )
@@ -42,7 +42,7 @@ class General(commands.Cog, name="general commands"):
         except discord.Forbidden:
             await ctx.send(embed=embed)
 
-    @commands.command(
+    @commands.hybrid_command(
         name="uptime",
         description="get uptime info",
     )
@@ -51,17 +51,17 @@ class General(commands.Cog, name="general commands"):
         embed = discord.Embed(title="Status", color=C_NEUTRAL)
         embed.add_field(
             name="Uptime",
-            value=f"`{str(datetime.utcnow() - self.bot.start_time)}`",
+            value=f"`{str(datetime.utcnow() - self.bot.start_time)}`",  # type: ignore
             inline=False,
         )
         embed.add_field(
             name="Last restart (UTC)",
-            value=f"`{str(self.bot.start_time)}`",
+            value=f"`{str(self.bot.start_time)}`",  # type: ignore
             inline=False,
         )
         await ctx.send(embed=embed)
 
-    @commands.command(
+    @commands.hybrid_command(
         name="github",
         description="get github link",
     )
@@ -74,7 +74,7 @@ class General(commands.Cog, name="general commands"):
             )
         )
 
-    @commands.command(
+    @commands.hybrid_command(
         name="about",
         description="general info",
     )

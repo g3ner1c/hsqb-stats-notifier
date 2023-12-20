@@ -16,6 +16,12 @@ class StatReport:
         self.name: str = name
         self.link: str = link
 
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, StatReport):
+            return NotImplemented
+
+        return self.name == __value.name and self.link == __value.link
+
 
 class TournamentStats:
     def __init__(
@@ -35,6 +41,16 @@ class TournamentStats:
             + "\n".join([f"\t{sr.name} ({sr.link})" for sr in self.stat_reports])
         )
 
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, TournamentStats):
+            return NotImplemented
+
+        return (
+            self.tournament_name == __value.tournament_name
+            and self.tournament_link == __value.tournament_link
+            and self.stat_reports == __value.stat_reports
+        )
+
 
 class Set:
     def __init__(self, name: str, link: str):
@@ -43,6 +59,12 @@ class Set:
 
     def __str__(self):
         return f"{self.name} ({self.link})"
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, Set):
+            return NotImplemented
+
+        return self.name == __value.name and self.link == __value.link
 
 
 class Scrape:
@@ -60,9 +82,11 @@ class Scraper(commands.Cog, name="scraper commands"):
     mock_webpage: bool = False
 
     cache: Scrape | None = None
+    scrape_cycle: int = 0
 
     def __init__(self, bot: Bot):
         self.bot = bot
+        self.scrape_cycle = 0
 
     async def get_page(self) -> Tuple[BeautifulSoup, datetime]:
         """Get HTML page from the front page of hsqb."""
@@ -120,6 +144,20 @@ class Scraper(commands.Cog, name="scraper commands"):
 
         return Scrape(stats=scraped_stats, sets=scraped_sets, timestamp=timestamp)
 
+    def get_new(self, new_scrape: Scrape) -> Scrape | None:
+        """Get new stats from a new scrape."""
+        if self.cache is None:
+            return None  # return None if there is no cache, first scrape will be used as cache
+        return Scrape(
+            stats=[
+                tournament
+                for tournament in new_scrape.stats
+                if tournament not in self.cache.stats
+            ],
+            sets=[set for set in new_scrape.sets if set not in self.cache.sets],
+            timestamp=new_scrape.timestamp,
+        )
+
     @tasks.loop(seconds=20)
     async def scrape(self) -> None:
         """Scrape data."""
@@ -133,6 +171,22 @@ class Scraper(commands.Cog, name="scraper commands"):
         for set in sets:
             print(set)
         print(scraped_data.timestamp.strftime("%Y-%m-%d %H:%M:%S"))
+        print("scrape complete")
+
+        new_data = self.get_new(scraped_data)  # newly posted stats and sets
+        if new_data is None:
+            print("no cache, setting cache")
+
+        if new_data is not None:
+            if len(new_data.stats) == 0 and len(new_data.sets) == 0:
+                print("no new data")
+
+            else:
+                pass
+
+        self.cache = scraped_data
+        self.scrape_cycle += 1
+        await self.bot.change_presence(activity=discord.Game(f"use /help | @ cycle {self.scrape_cycle}"))  # type: ignore
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:

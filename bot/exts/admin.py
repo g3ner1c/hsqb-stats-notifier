@@ -23,7 +23,6 @@ class Admin(commands.Cog, name="admin and dev commands"):
         """Close all HTTP sessions and end the bot process."""
         embed = discord.Embed(description="bot killed by owner", color=C_SUCCESS)
         await ctx.send(embed=embed)
-        await self.bot.session.close()
         await self.bot.close()
 
     @commands.group(
@@ -48,7 +47,9 @@ class Admin(commands.Cog, name="admin and dev commands"):
     async def load(self, ctx: Context, *exts: str) -> None:
         """Load extensions."""
         if len(exts) == 1 and exts[0] == "*":
-            exts = [ext[:-3] for ext in os.listdir("./bot/exts") if ext.endswith(".py")]
+            exts = tuple(
+                ext[:-3] for ext in os.listdir("./bot/exts") if ext.endswith(".py")
+            )
 
         for ext in exts:
             try:
@@ -76,7 +77,9 @@ class Admin(commands.Cog, name="admin and dev commands"):
     async def unload(self, ctx: Context, *exts: str) -> None:
         """Unload extensions."""
         if len(exts) == 1 and exts[0] == "*":
-            exts = [ext[:-3] for ext in os.listdir("./bot/exts") if ext.endswith(".py")]
+            exts = tuple(
+                ext[:-3] for ext in os.listdir("./bot/exts") if ext.endswith(".py")
+            )
 
         for ext in exts:
             try:
@@ -103,7 +106,9 @@ class Admin(commands.Cog, name="admin and dev commands"):
     async def reload(self, ctx: Context, *exts: str) -> None:
         """Reload extensions."""
         if len(exts) == 1 and exts[0] == "*":
-            exts = [ext[:-3] for ext in os.listdir("./bot/exts") if ext.endswith(".py")]
+            exts = tuple(
+                ext[:-3] for ext in os.listdir("./bot/exts") if ext.endswith(".py")
+            )
 
         for ext in exts:
             try:
