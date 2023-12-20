@@ -63,7 +63,9 @@ class Admin(commands.Cog, name="admin and dev commands"):
                 await ctx.send(embed=embed)
                 return
 
-            embed = discord.Embed(title="Load", description=f"Loaded `{ext}`", color=C_SUCCESS)
+            embed = discord.Embed(
+                title="Load", description=f"Loaded `{ext}`", color=C_SUCCESS
+            )
             await ctx.send(embed=embed)
 
     @cog.command(
@@ -88,7 +90,9 @@ class Admin(commands.Cog, name="admin and dev commands"):
                 )
                 await ctx.send(embed=embed)
                 return
-            embed = discord.Embed(title="Unload", description=f"Unloaded `{ext}`", color=C_SUCCESS)
+            embed = discord.Embed(
+                title="Unload", description=f"Unloaded `{ext}`", color=C_SUCCESS
+            )
             await ctx.send(embed=embed)
 
     @cog.command(
@@ -113,7 +117,9 @@ class Admin(commands.Cog, name="admin and dev commands"):
                 )
                 await ctx.send(embed=embed)
                 return
-            embed = discord.Embed(title="Reload", description=f"Reloaded `{ext}`", color=C_SUCCESS)
+            embed = discord.Embed(
+                title="Reload", description=f"Reloaded `{ext}`", color=C_SUCCESS
+            )
             await ctx.send(embed=embed)
 
 

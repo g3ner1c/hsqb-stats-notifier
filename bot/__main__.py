@@ -25,11 +25,11 @@ bot = Bot(command_prefix=commands.when_mentioned_or(PREFIX), intents=intents)
 async def on_ready() -> None:  # noqa: D103
     # start processes
 
-    bot.session = ClientSession(loop=bot.loop)
-    bot.start_time = datetime.utcnow()
+    bot.session: ClientSession = ClientSession(loop=bot.loop)  # type: ignore
+    bot.start_time: datetime = datetime.utcnow()  # type: ignore
     print("loaded aiohttp session")
     print("-------------------")
-    print(f"{bot.user.name}#{bot.user.discriminator}")
+    print(f"{bot.user.name}#{bot.user.discriminator}")  # type: ignore
     print(f"discord.py {discord.__version__}")
     print(f"Python {platform.python_version()}")
     print(f"{platform.system()} {platform.release()} ({os.name})")
@@ -103,4 +103,4 @@ async def load_cogs() -> None:  # noqa: D103
 
 asyncio.run(load_cogs())
 
-bot.run(TOKEN)
+bot.run(TOKEN)  # type: ignore
