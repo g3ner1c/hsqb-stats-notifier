@@ -43,3 +43,11 @@ C_ERROR = int(config["embed_colors"]["error"], 16)
 C_SUCCESS = int(config["embed_colors"]["success"], 16)
 
 HSQB = "https://hsquizbowl.org/db/"
+
+# mongodb
+
+MONGODB_HOST = os.getenv("MONGODB_HOST")
+MONGODB_USERNAME = os.getenv("MONGODB_USERNAME")
+MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD")
+
+MONGODB_URI = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_HOST}/?retryWrites=true&w=majority"  # noqa: E501

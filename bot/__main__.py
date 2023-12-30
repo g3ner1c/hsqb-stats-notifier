@@ -33,7 +33,7 @@ class Primed(Bot):
         """Load cogs and start the bot."""
         self.session: ClientSession = ClientSession(loop=self.loop)
         await self.load_cogs()
-        await self.tree.sync()
+        # await self.tree.sync()
 
     async def load_cogs(self) -> None:  # noqa: D103
         for file in os.listdir("./bot/exts"):

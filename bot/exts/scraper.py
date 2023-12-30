@@ -99,7 +99,7 @@ class Scraper(commands.Cog, name="scraper commands"):
                 datetime.utcnow(),
             )
 
-    def parse_page(self, soup: BeautifulSoup, timestamp: datetime) -> Scrape:
+    async def parse_page(self, soup: BeautifulSoup, timestamp: datetime) -> Scrape:
         """Parse BeautifulSoup into a list of stats and sets."""
         stats_div = soup.find(id="RecentStats")
         tournaments = stats_div.find("ul", class_="Tournaments").find_all(  # type: ignore
@@ -144,7 +144,7 @@ class Scraper(commands.Cog, name="scraper commands"):
 
         return Scrape(stats=scraped_stats, sets=scraped_sets, timestamp=timestamp)
 
-    def get_new(self, new_scrape: Scrape) -> Scrape | None:
+    async def get_new(self, new_scrape: Scrape) -> Scrape | None:
         """Get new stats from a new scrape."""
         if self.cache is None:
             return None  # return None if there is no cache, first scrape will be used as cache
@@ -163,7 +163,7 @@ class Scraper(commands.Cog, name="scraper commands"):
         """Scrape data."""
         print("attempting to scrape")
         soup, timestamp = await self.get_page()
-        scraped_data = self.parse_page(soup, timestamp)
+        scraped_data = await self.parse_page(soup, timestamp)
         stats = scraped_data.stats
         sets = scraped_data.sets
         for stat in stats:
@@ -173,7 +173,7 @@ class Scraper(commands.Cog, name="scraper commands"):
         print(scraped_data.timestamp.strftime("%Y-%m-%d %H:%M:%S"))
         print("scrape complete")
 
-        new_data = self.get_new(scraped_data)  # newly posted stats and sets
+        new_data = await self.get_new(scraped_data)  # newly posted stats and sets
         if new_data is None:
             print("no cache, setting cache")
 
@@ -186,7 +186,7 @@ class Scraper(commands.Cog, name="scraper commands"):
 
         self.cache = scraped_data
         self.scrape_cycle += 1
-        await self.bot.change_presence(activity=discord.Game(f"use /help | @ cycle {self.scrape_cycle}"))  # type: ignore
+        await self.bot.change_presence(activity=discord.Game(f"/help | @ cycle #{self.scrape_cycle}"))  # type: ignore
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
