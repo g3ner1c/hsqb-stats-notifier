@@ -107,14 +107,15 @@ class User:
             return NotImplemented
 
         return (
-            self.discord_id == __value.discord_id
-            and self.username == __value.username
-            and self.global_name == __value.global_name
-            and self.bot == __value.bot
-            and self.system == __value.system
-            and self.dm_channel_id == __value.dm_channel_id
-            and self.stats == __value.stats
-            and self.sets == __value.sets
+            self.discord_id
+            == __value.discord_id
+            # and self.username == __value.username
+            # and self.global_name == __value.global_name
+            # and self.bot == __value.bot
+            # and self.system == __value.system
+            # and self.dm_channel_id == __value.dm_channel_id
+            # and self.stats == __value.stats
+            # and self.sets == __value.sets
         )
 
 
